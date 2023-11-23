@@ -12,8 +12,8 @@ const serverOptions = {
 const forwardOptions = {
     srcAddr: '0.0.0.0',
     srcPort: port,
-    dstAddr: 'oracle.scs.ryerson.ca',
-    dstPort: port
+    dstAddr: 'oracle12c.scs.ryerson.ca',
+    dstPort: 1521
 }
 export async function runTunnel(username: string, password: string) {
     try {
