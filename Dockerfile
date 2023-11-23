@@ -16,4 +16,4 @@ ARG DISCORD_CLIENT_SECRET
 
 RUN npm run build
 
-CMD ["node", "/.svelte-kit/output/index.js"]
+CMD ["node", "/app/build/index.js"]
