@@ -30,11 +30,11 @@ export async function runTunnel(username: string, password: string) {
             forwardOptions
         )
         server.on('error', (e) => {
-            console.log(e)
+            console.log("Server error", e)
         })
 
         conn.on('error', (e: any) => {
-            console.log(e)
+            console.log("Conn error", e)
         })
 
         server.on('listening', () => {

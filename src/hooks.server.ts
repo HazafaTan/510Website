@@ -1,11 +1,7 @@
-import { building } from '$app/environment'; // <---- here
+import { building } from '$app/environment';
 import { runTunnel } from '$lib/sshTunnel';
+import { DB_USER, DB_PASS } from '$env/static/private';
 
-const runAllTheInitFunctions = async () => {
-    await runTunnel('','')
-
-}
-
-if (!building) {                             // <---- here
-    await runAllTheInitFunctions();
+if (!building) {                          
+    await runTunnel(DB_USER, DB_PASS);
 }
