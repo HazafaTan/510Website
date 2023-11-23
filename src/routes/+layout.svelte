@@ -10,13 +10,15 @@
       <a href="/" class="flex items-center justify-between w-24"
         ><i class="fa-solid fa-car-tunnel text-3xl"></i>Home</a
       >
-      <a href="/about">About</a>
+      <!-- <a href="/about">About</a> -->
       <a href="/admin">Admin</a>
     </div>
     <div class="font-bold">
-      Logged in as <span class="text-blue-200">John Doe</span>
+      Logged in as <span class="text-blue-200">Admin</span>
     </div>
   </nav>
 </header>
 
-<slot />
+<main class="m-10">
+  <slot />
+</main>
