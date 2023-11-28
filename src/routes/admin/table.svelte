@@ -5,6 +5,8 @@
   export let store: Writable<any>;
   export let title = "Table";
 
+  const path = title.toLowerCase().replace(" ", "");
+
   const first = Object.values($store)[0] || {};
 
   let editing: any = null;
@@ -12,9 +14,9 @@
 
   const cany = (x: any): any => x;
 
-  async function patch(id: string, data: any) {
-    const res = await fetch(`/api/${title.toLowerCase().replace(" ", "")}`, {
-      method: "PATCH",
+  async function request(method: string, data: any) {
+    const res = await fetch(`/api/${path}`, {
+      method,
       headers: {
         "Content-Type": "application/json",
       },
@@ -22,7 +24,7 @@
     });
 
     if (res.ok) {
-      console.log("patched: ", id);
+      console.log(method, title, data);
       refresh();
     }
   }
@@ -92,7 +94,7 @@
                   if (editing === id) {
                     editing = null;
 
-                    patch(id, temp);
+                    request("PATCH", temp);
                   } else {
                     editing = id;
 
@@ -104,6 +106,19 @@
               >
                 <i class="fa-solid fa-pencil"></i>
               </button>
+
+              {#if editing === id}
+                <button
+                  class="stuff bg-red-600 text-white font-bold px-2 py-1 rounded-md w-10 hover:bg-red-700 active:bg-red-800 transition-colors duration-100"
+                  on:click={() => {
+                    editing = null;
+
+                    request("DELETE", temp);
+                  }}
+                >
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              {/if}
             {/if}
           </td>
         </tr>

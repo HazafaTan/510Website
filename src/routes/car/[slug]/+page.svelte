@@ -121,12 +121,12 @@
           </span>
         </div>
 
-        <button
+        <!-- <button
           class="bg-blue-600 text-white font-bold px-2 py-1 rounded-md w-24"
           on:click={send}
         >
           Edit
-        </button>
+        </button> -->
       </div>
     </div>
   </div>

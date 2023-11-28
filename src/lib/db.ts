@@ -8,8 +8,11 @@ import  type {
     User,
     ItemInfo
 } from "./stores";
+import { building } from '$app/environment';
 
 export const images = cache<{ [key: string]: Image }>({}, async () => {
+    if (building) return {};
+
     const images = await fetchImages();
     const imageMap: { [key: string]: Image } = {}
     images.filter((image: any) => image.CONTENT !== "https://hazafa.b-cdn.net/tmp.jpg").forEach((image: any) => {
@@ -27,6 +30,8 @@ export const getImage = (id: string) => get(images)[id];
 
 
 export const bids = cache<Bid[]>([], async () => {
+    if (building) return [];
+
     const bids = await fetchBids();
     return bids.map((bid: any) => ({
         item_id: bid.ITEM_ID,
@@ -40,6 +45,8 @@ export const getBidsByUserId = (id: number) => get(bids).filter((bid: Bid) => bi
 export const getBid = (itemId: number, userId: number) => get(bids).find((bid: Bid) => bid.item_id === itemId && bid.user_id === userId);
 
 export const users = cache<{ [key: number]: User }>({}, async () => {
+    if (building) return {};
+
     const users = await fetchUsers();
 
     const userMap: { [key: string]: User } = {}
@@ -54,6 +61,8 @@ export const getUser = (id: number) => get(users)[id];
 
 
 export const auctions = cache<{ [key: number]: Auction }>({}, async () => {
+    if (building) return {};
+
     const auctions = await fetchAuctions();
 
     const auctionMap: { [key: number]: Auction } = {}
@@ -68,6 +77,8 @@ export const getAuction = (id: number) => get(auctions)[id];
 
 
 export const item_info = cache<{ [key: number]: ItemInfo }>({}, async () => {
+    if (building) return {};
+
     const item_info = await fetchItemInfo();
 
     const itemInfoMap: { [key: number]: ItemInfo } = {}
