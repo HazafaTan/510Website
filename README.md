@@ -18,4 +18,4 @@ npm run build
 npm run preview
 ```
 
-or visit https://github.com/HazafaTan/510Website
+or visit https://cps510.ncp.nathanferns.xyz/
