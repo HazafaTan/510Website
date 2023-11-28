@@ -1,5 +1,6 @@
-import { get, writable, type Writable } from "svelte/store"
+import { get, writable} from "svelte/store"
 import { cache } from "./cache"
+import { browser } from "$app/environment"
 
 export type Bid = {
     item_id: number
@@ -8,6 +9,7 @@ export type Bid = {
 }
 
 export type Image = {
+    image_id: string
     url: string
     alt: string
 }
@@ -31,91 +33,51 @@ export type Auction = {
 }
 
 export type ItemInfo = {
+    item_id: number
     name: string
     description: string
     image_id: string
 }
 
-
-export const images = cache<{ [key: string]: Image }>({}, async () => {
-    const images = await fetch('/api/images').then(res => res.json());
-
-    const imageMap: { [key: string]: Image } = {}
-    images.filter((image: any) => image.CONTENT !== "https://hazafa.b-cdn.net/tmp.jpg").forEach((image: any) => {
-        imageMap[image.IMAGE_ID] = {
-            url: image.CONTENT,
-            alt: image.ALT_TEXT
-        }
-    })
-
-    return imageMap
-}, 5000);
-
-
-export const bids = cache<Bid[]>([], async () => {
-    const bids = await fetch('/api/bids').then(res => res.json());
-    return bids.map((bid: any) => ({
-        item_id: bid.ITEM_ID,
-        user_id: bid.USER_ID,
-        bid_amount: bid.BID_AMOUNT
-    }))
-}, 1000);
-
-
-export const users = cache<{ [key: number]: User }>({}, async () => {
-    const users = await fetch('/api/users').then(res => res.json()) as User[];
-
-    const userMap: { [key: string]: User } = {}
-    users.forEach((user: User) => {
-        userMap[user.user_id] = user
-    })
-
-    return userMap
-}, 5000);
-
-
-export const auctions = cache<{ [key: number]: Auction }>({}, async () => {
-    const auctions = await fetch('/api/auctions').then(res => res.json()) as Auction[];
-
-    const auctionMap: { [key: number]: Auction } = {}
-    auctions.forEach((auction: Auction) => {
-        auctionMap[auction.item_id] = auction
-    })
-
-    return auctionMap
-}, 1000);
-
-
-export const item_info = cache<{ [key: number]: ItemInfo }>({}, async () => {
-    const item_info = await fetch('/api/iteminfo').then(res => res.json());
-
-    const itemInfoMap: { [key: number]: ItemInfo } = {}
-    item_info.forEach((itemInfo: any) => {
-        itemInfoMap[itemInfo.ITEM_ID] = {
-            name: itemInfo.NAME,
-            description: itemInfo.DESCRIPTION,
-            image_id: itemInfo.IMAGE_ID
-        }
-    })
-
-    return itemInfoMap
-}, 5000);
-
-
-
-
 export const ready = writable(false);
-// Promise.all([images.ready, item_info.ready, auctions.ready, bids.ready, users.ready]).then(() => {
-//     ready.set(true)
-// });
 
+export const images = writable<{ [key: string]: Image }>({})
+export const bids = writable<Bid[]>([])
+export const users = writable<{ [key: number]: User }>({})
+export const auctions = writable<{ [key: number]: Auction }>({})
+export const item_info = writable<{ [key: number]: ItemInfo }>({})
 
-async function checkReady() {
-    if (get(images.ready) && get(item_info.ready) && get(auctions.ready) && get(bids.ready) && get(users.ready)) {
-        ready.set(true)
+export const db = cache<{ 
+    images: { [key: string]: Image },
+    bids: Bid[],
+    users: { [key: number]: User },
+    auctions: { [key: number]: Auction },
+    item_info: { [key: number]: ItemInfo }
+}>({
+    images: {},
+    bids: [],
+    users: {},
+    auctions: {},
+    item_info: {}
+}, async () => {
+    if (!browser) {
+        return;
     }
 
-    setTimeout(checkReady, 500)
-}
+    const result = await fetch('/api').then(res => res.json());
 
-checkReady()
+    images.set(result.images)
+    bids.set(result.bids)
+    users.set(result.users)
+    auctions.set(result.auctions)
+    item_info.set(result.item_info)
+
+    ready.set(true);
+
+    return result
+}, 250);
+
+
+export const refresh = () => {
+    db.refresh();
+}

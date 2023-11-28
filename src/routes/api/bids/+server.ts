@@ -1,7 +1,6 @@
-import { getBids } from '$lib/oracle.js'
+import { getBids } from '$lib/db';
 import { JSONResponse } from '../lib';
 
 export async function GET() {
-  const users = await getBids();
-  return JSONResponse(users);
+  return JSONResponse(getBids());
 }

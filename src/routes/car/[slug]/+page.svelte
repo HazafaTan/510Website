@@ -3,6 +3,7 @@
     images,
     item_info,
     auctions,
+    users,
     bids,
     ready,
     type ItemInfo,
@@ -63,6 +64,7 @@
   {@const info = $item_info[item_id]}
   {@const image = $images[info.image_id]}
   {@const auction = $auctions[item_id]}
+  {@const seller = $users[$auctions[item_id].seller_id]}
 
   <h1 class="text-2xl font-bold mb-4">
     <i class="fa-solid fa-circle text-red-500 animate-pulse mr-1"></i>
@@ -71,6 +73,17 @@
       bind:value={name}
     />
   </h1>
+
+  <div>
+    <span class="font-bold">Seller:</span>
+    <div>
+      <img
+        src={seller.avatar.url}
+        alt={seller.avatar.alt}
+        class="w-10 h-10 rounded-full inline-block mr-2 border-white border-4"
+      />
+    </div>
+  </div>
 
   <div class="flex flex-row space-x-8">
     <img class="rounded-lg w-96" src={image.url} alt={image.alt} />

@@ -1,9 +1,6 @@
 <script lang="ts">
-  import { users } from "$lib/stores";
-  import { tick } from "svelte";
-  import { fade } from "svelte/transition";
-
-  const ready = users.ready;
+  import { users, auctions, item_info, images, bids, ready } from "$lib/stores";
+  import Table from "./table.svelte";
 </script>
 
 <div class="max-w-4xl">
@@ -14,8 +11,6 @@
       class="flex items-center justify-between bg-blue-600 text-white font-bold px-2 py-1 rounded-md w-24"
       on:click={async () => {
         ready.set(false);
-        await tick();
-        users.refresh();
       }}
     >
       <i class="fa-solid fa-arrows-rotate"></i>
@@ -24,25 +19,11 @@
   </div>
 
   {#if $ready}
-    <ul transition:fade>
-      {#each Object.entries($users) as [id, user]}
-        <li
-          class=" text-xl bg-blue-600 bg-opacity-50 px-4 py-2 my-2 rounded-lg flex items-center justify-between"
-        >
-          <div class="flex items-center">
-            <img
-              src={user.avatar.url}
-              alt={user.avatar.alt}
-              class="w-10 h-10 rounded-full inline-block mr-2 border-white border-4"
-            />
-            <p>{user.name}</p>
-          </div>
-
-          <p>{user.email}</p>
-          <code class="font-bold">#{id}</code>
-        </li>
-      {/each}
-    </ul>
+    <Table store={users} title="Users" />
+    <Table store={auctions} title="Auctions" />
+    <Table store={item_info} title="Item Info" />
+    <Table store={images} title="Images" />
+    <Table store={bids} title="Bids" />
   {:else}
     <p class="font-bold text-xl animate-pulse my-2">Fetching Users...</p>
   {/if}

@@ -1,9 +1,9 @@
-import { dbConn, getAuctions } from '$lib/oracle.js'
+import { dbConn } from '$lib/oracle.js'
+import { getAuctions } from '$lib/db'
 import { JSONResponse } from '../lib';
 
 export async function GET() {
-  const users = await getAuctions();
-  return JSONResponse(users);
+  return JSONResponse(getAuctions());
 }
 
 export async function PUT({request}) {

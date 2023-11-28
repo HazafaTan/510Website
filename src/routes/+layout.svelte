@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import "../app.css";
 </script>
 
@@ -22,3 +22,24 @@
 <main class="m-10">
   <slot />
 </main>
+
+<style>
+  :global(::-webkit-scrollbar) {
+    width: 10px;
+  }
+
+  /* Track */
+  :global(::-webkit-scrollbar-track) {
+    @apply bg-gray-900;
+  }
+
+  /* Handle */
+  :global(::-webkit-scrollbar-thumb) {
+    @apply bg-gray-700;
+  }
+
+  /* Handle on hover */
+  :global(::-webkit-scrollbar-thumb:hover) {
+    @apply bg-gray-700;
+  }
+</style>

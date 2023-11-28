@@ -1,13 +1,42 @@
-import { dbConn, getItemInfo } from '$lib/oracle.js'
+import { getItemInfo } from '$lib/db';
+import { dbConn } from '$lib/oracle.js'
 import { JSONResponse } from '../lib';
 
 export async function GET() {
-  const users = await getItemInfo();
-  return JSONResponse(users);
+  return JSONResponse(getItemInfo());
 }
 
+export async function POST({request}) {
+    const payload = await request.json();
+  
+    const {
+        item_id, name, description, image_id
+    } = payload;
 
-export async function PUT({request}) {
+    dbConn.execute(
+      `INSERT INTO ITEM_INFO VALUES (:item_id, :name, :description, :image_id)`,
+        [item_id, name, description, image_id],
+        { autoCommit: true }
+    );
+    return new Response();
+  }
+
+export async function DELETE({request}) {
+    const payload = await request.json();
+  
+    const {
+        item_id
+    } = payload;
+
+    dbConn.execute(
+      `DELETE FROM ITEM_INFO WHERE item_id = :item_id`,
+        [item_id],
+        { autoCommit: true }
+    );
+    return new Response();
+  }
+
+export async function PATCH({request}) {
     const payload = await request.json();
   
     const {

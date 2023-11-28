@@ -1,7 +1,51 @@
-import { getUsers } from '$lib/oracle.js'
+import { getUser, getUsers } from '$lib/db';
+import { dbConn } from '$lib/oracle';
 import { JSONResponse } from '../lib';
 
 export async function GET() {
-  const users = await getUsers();
-  return JSONResponse(users);
+  return JSONResponse(getUsers());
+}
+
+export async function PATCH({ request }) {
+  const payload = await request.json();
+
+  const {
+    user_id,
+    name,
+    email,
+  } = payload;
+
+  const res = await dbConn.execute(
+    `UPDATE users SET name = :name, email = :email WHERE user_id = :user_id`,
+    [name, email, user_id],
+    { autoCommit: true }
+  );
+
+  // check for success
+  if (res.rowsAffected !== 1) {
+    return new Response('Failed to update user', { status: 500 });
+  }
+
+  return new Response();
+}
+
+export async function DELETE({ request }) {
+  const payload = await request.json();
+
+  const {
+    user_id,
+  } = payload;
+
+  const res = await dbConn.execute(
+    `DELETE FROM users WHERE user_id = :user_id`,
+    [user_id],
+    { autoCommit: true }
+  );
+
+  // check for success
+  if (res.rowsAffected !== 1) {
+    return new Response('Failed to delete user', { status: 500 });
+  }
+
+  return new Response();
 }

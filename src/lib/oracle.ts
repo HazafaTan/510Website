@@ -36,7 +36,8 @@ export function buildUser(user: any): User {
         name: user.NAME,
         avatar: {
             url: avatar,
-            alt: user.CONTENT
+            alt: user.CONTENT,
+            image_id: ""
         },
         email: user.EMAIL
     }
@@ -45,8 +46,8 @@ export function buildUser(user: any): User {
 
 const IMAGE_BASE: string = 'https://hazafatan.b-cdn.net'
 const DEFAULT_AVATAR_IMAGE_BASE: string = 'https://api.dicebear.com/7.x/bottts-neutral/svg'
-export async function getUsers(): Promise<User[]> {
-    console.log('getting users');
+export async function fetchUsers(): Promise<User[]> {
+    // console.log('fetching users');
     const result = await dbConn.execute(`SELECT * FROM USERS`)
     const users = result.rows as any[]
     return users.map(buildUser)
@@ -83,27 +84,27 @@ export function buildAuction(auction: any): Auction {
     }
 }
 
-export async function getAuctions(): Promise<Auction[]> {
-    console.log('getting auctions');
+export async function fetchAuctions(): Promise<Auction[]> {
+    // console.log('fetching auctions');
     const result = await dbConn.execute(`SELECT * FROM AUCTION`)
     const auctions = result.rows as any[]
     return auctions.map(buildAuction)
 }
 
-export async function getImages(): Promise<any[]> {
-    console.log('getting images');
+export async function fetchImages(): Promise<any[]> {
+    // console.log('fetching images');
     const result = await dbConn.execute(`SELECT * FROM IMAGES`)
     return result.rows as any[]
 }
 
-export async function getBids(): Promise<any[]> {
-    console.log('getting bids');
+export async function fetchBids(): Promise<any[]> {
+    // console.log('fetching bids');
     const result = await dbConn.execute(`SELECT * FROM BIDS`)
     return result.rows as any[]
 }
 
-export async function getItemInfo(): Promise<any[]> {
-    console.log('getting item info');
+export async function fetchItemInfo(): Promise<any[]> {
+    // console.log('fetching item info');
     const result = await dbConn.execute(`SELECT * FROM ITEM_INFO`)
     return result.rows as any[]
 }
