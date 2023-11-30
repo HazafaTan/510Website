@@ -3,7 +3,7 @@
   import Table from "./table.svelte";
 </script>
 
-<div class="max-w-4xl">
+<div class="max-w-6xl">
   <div class="flex items-center space-x-4">
     <h2 class="text-2xl font-bold">Admin Dashboard</h2>
 

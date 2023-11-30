@@ -69,6 +69,7 @@ export const db = cache<{
     images.set(result.images)
     bids.set(result.bids)
     users.set(result.users)
+
     auctions.set(result.auctions)
     item_info.set(result.item_info)
 

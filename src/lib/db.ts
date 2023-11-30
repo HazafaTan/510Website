@@ -49,7 +49,7 @@ export const users = cache<{ [key: number]: User }>({}, async () => {
 
     const users = await fetchUsers();
 
-    const userMap: { [key: string]: User } = {}
+    const userMap: { [key: number]: User } = {}
     users.forEach((user: User) => {
         userMap[user.user_id] = user
     })

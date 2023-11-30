@@ -6,15 +6,15 @@ export async function GET() {
   return JSONResponse(getAuctions());
 }
 
-export async function PUT({request}) {
+export async function PATCH({request}) {
   const payload = await request.json();
 
   const {
-    item_id, current_bid, buyout_price, bid_code, expiry
+    item_id, current_bid, buyout_price, bid_state, expiry
   } = payload;
 
   let code = 1;
-  switch (bid_code) {
+  switch (bid_state) {
     case 'listed':
       code = 1;
       break;

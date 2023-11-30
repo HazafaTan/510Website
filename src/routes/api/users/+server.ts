@@ -6,6 +6,30 @@ export async function GET() {
   return JSONResponse(getUsers());
 }
 
+export async function POST({ request }) {
+  const payload = await request.json();
+
+  const {
+    user_id,
+    name,
+    email,
+    avatar,
+  } = payload;
+
+  const res = await dbConn.execute(
+    `INSERT INTO users (user_id, name, avatar_id, email) VALUES (:user_id, :name, :avatar, :email)`,
+    [user_id, name, avatar, email],
+    { autoCommit: true }
+  );
+
+  // check for success
+  if (res.rowsAffected !== 1) {
+    return new Response('Failed to create user', { status: 500 });
+  }
+
+  return new Response();
+}
+
 export async function PATCH({ request }) {
   const payload = await request.json();
 

@@ -34,7 +34,27 @@
   {title} ({Object.keys($store).length})
 </h2>
 
-<div class="overflow-y-scroll h-[50rem]">
+<div class="flex items-center space-x-2 mt-2">
+  {#each Object.entries(first) as [key, value]}
+    <input
+      class="bg-gray-700 text-gray-400 w-full p-1"
+      type="text"
+      placeholder={key}
+      bind:value={temp[key]}
+    />
+  {/each}
+
+  <button
+    class="bg-green-600 text-white font-bold px-2 py-1 rounded-md w-10 hover:bg-green-700 active:bg-green-800 transition-colors duration-100"
+    on:click={() => {
+      request("POST", temp);
+    }}
+  >
+    <i class="fa-solid fa-plus"></i>
+  </button>
+</div>
+
+<div class="overflow-y-scroll h-[50rem] w-full">
   <table class="w-full mt-2 table-auto border-gray-700 border">
     <thead class="uppercase bg-gray-700 text-gray-400">
       <tr>
